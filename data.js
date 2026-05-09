@@ -17,25 +17,27 @@ const DB = {
   // ---- Products Catalog ----
   PRODUCTS: [
     // Honey
-    { id: 'H100',  category: 'honey',        name: 'Pure Honey 100g',           icon: '🍯', price: 180,  size: '100g',  variety: null },
-    { id: 'H200',  category: 'honey',        name: 'Pure Honey 200g',           icon: '🍯', price: 320,  size: '200g',  variety: null },
-    { id: 'H300',  category: 'honey',        name: 'Pure Honey 300g',           icon: '🍯', price: 450,  size: '300g',  variety: null },
-    { id: 'H500',  category: 'honey',        name: 'Pure Honey 500g',           icon: '🍯', price: 700,  size: '500g',  variety: null },
-    { id: 'H1KG',  category: 'honey',        name: 'Pure Honey 1kg',            icon: '🍯', price: 1300, size: '1kg',   variety: null },
+    { id: 'H100',  category: 'honey',        name: 'Quick Health Pure Honey 100g',           icon: '🍯', price: 64,  size: '100g',  variety: null },
+    { id: 'H200',  category: 'honey',        name: 'Quick Health Pure Honey 200g',           icon: '🍯', price: 120,  size: '200g',  variety: null },
+    { id: 'H300RJ',  category: 'honey',        name: 'Quick Health Pure Honey 300g RoundJar',           icon: '🍯', price: 168,  size: '300gRJ',  variety: null },
+    { id: 'H300SJ',  category: 'honey',        name: 'Quick Health Pure Honey 300g SqueezeJar',           icon: '🍯', price: 168,  size: '300gSJ',  variety: null },
+    { id: 'H500RJ',  category: 'honey',        name: 'Quick Health Pure Honey 500g RoundJar',           icon: '🍯', price: 260,  size: '500gRJ',  variety: null },
+    { id: 'H500SJ',  category: 'honey',        name: 'Quick Health Pure Honey 500g SqueezeJar',           icon: '🍯', price: 260,  size: '500gSJ',  variety: null },
+    { id: 'H1KG',  category: 'honey',        name: 'Quick Health Pure Honey 1kg',            icon: '🍯', price: 520, size: '1kg',   variety: null },
     // Peanut Butter — Smooth
-    { id: 'PBS150', category: 'peanut_butter', name: 'Peanut Butter Smooth 150g', icon: '🥜', price: 150,  size: '150g',  variety: 'smooth' },
-    { id: 'PBS250', category: 'peanut_butter', name: 'Peanut Butter Smooth 250g', icon: '🥜', price: 230,  size: '250g',  variety: 'smooth' },
-    { id: 'PBS400', category: 'peanut_butter', name: 'Peanut Butter Smooth 400g', icon: '🥜', price: 360,  size: '400g',  variety: 'smooth' },
-    { id: 'PBS800', category: 'peanut_butter', name: 'Peanut Butter Smooth 800g', icon: '🥜', price: 680,  size: '800g',  variety: 'smooth' },
+    { id: 'PBS150', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Smooth 150g', icon: '🥜', price: 92,  size: '150g',  variety: 'smooth' },
+    { id: 'PBS250', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Smooth 250g', icon: '🥜', price: 148,  size: '250g',  variety: 'smooth' },
+    { id: 'PBS400', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Smooth 400g', icon: '🥜', price: 224,  size: '400g',  variety: 'smooth' },
+    { id: 'PBS800', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Smooth 800g', icon: '🥜', price: 412,  size: '800g',  variety: 'smooth' },
     // Peanut Butter — Crunchy
-    { id: 'PBC150', category: 'peanut_butter', name: 'Peanut Butter Crunchy 150g', icon: '🥜', price: 150,  size: '150g',  variety: 'crunchy' },
-    { id: 'PBC250', category: 'peanut_butter', name: 'Peanut Butter Crunchy 250g', icon: '🥜', price: 230,  size: '250g',  variety: 'crunchy' },
-    { id: 'PBC400', category: 'peanut_butter', name: 'Peanut Butter Crunchy 400g', icon: '🥜', price: 360,  size: '400g',  variety: 'crunchy' },
-    { id: 'PBC800', category: 'peanut_butter', name: 'Peanut Butter Crunchy 800g', icon: '🥜', price: 680,  size: '800g',  variety: 'crunchy' },
+    { id: 'PBC150', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Crunchy 150g', icon: '🥜', price: 92,  size: '150g',  variety: 'crunchy' },
+    { id: 'PBC250', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Crunchy 250g', icon: '🥜', price: 148,  size: '250g',  variety: 'crunchy' },
+    { id: 'PBC400', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Crunchy 400g', icon: '🥜', price: 224,  size: '400g',  variety: 'crunchy' },
+    { id: 'PBC800', category: 'peanut_butter', name: 'Sweetnut Peanut Butter Crunchy 800g', icon: '🥜', price: 412,  size: '800g',  variety: 'crunchy' },
     // Peanuts
-    { id: 'PN50',  category: 'peanuts',      name: 'Roasted Peanuts 50g',       icon: '🫘', price: 60,   size: '50g',   variety: null },
-    { id: 'PN100', category: 'peanuts',      name: 'Roasted Peanuts 100g',      icon: '🫘', price: 110,  size: '100g',  variety: null },
-    { id: 'PN200', category: 'peanuts',      name: 'Roasted Peanuts 200g',      icon: '🫘', price: 200,  size: '200g',  variety: null },
+    { id: 'PN50',  category: 'peanuts',      name: 'Sweetnut Roasted Peanuts 50g',       icon: '🫘', price: 35,   size: '50g',   variety: null },
+    { id: 'PN100', category: 'peanuts',      name: 'Sweetnut Roasted Peanuts 100g',      icon: '🫘', price: 54,  size: '100g',  variety: null },
+    { id: 'PN200', category: 'peanuts',      name: 'Sweetnut Roasted Peanuts 200g',      icon: '🫘', price: 98,  size: '200g',  variety: null },
   ],
 
   getProduct(id) { return this.PRODUCTS.find(p => p.id === id); },
@@ -196,21 +198,17 @@ const DB = {
 (function seedDemo() {
   if (DB.getCustomers().length > 0) return;
   const customers = [
-    { name: 'Mama Wanjiku Stores',  phone: '0712345678', email: 'wanjiku@store.co.ke',  address: 'Westlands, Nairobi' },
-    { name: 'Kamau Supermarket',    phone: '0723456789', email: 'info@kamau.co.ke',      address: 'Ngong Road, Nairobi' },
-    { name: 'Njeri Organic Foods',  phone: '0734567890', email: 'njeri@organic.co.ke',   address: 'Karen, Nairobi' },
-    { name: 'Omondi Fresh Mart',    phone: '0745678901', email: 'omondi@fresh.co.ke',    address: 'Kisumu CBD' },
-    { name: 'Aisha Health Shop',    phone: '0756789012', email: 'aisha@health.co.ke',    address: 'Mombasa Road' },
+    { name: 'Eastmatt Supermarkets',  phone: '0712345678', email: 'info',  address: 'Likoni Road, Nairobi' },
+    { name: 'Cleanshelf Supermarkets',    phone: '0723456789', email: 'info',      address: 'Nairobi' },
+    { name: 'Ottomart Supermarkets',  phone: '0734567890', email: 'info',   address: 'Nairobi' },
+    { name: 'MuhindiMweusi Supermarkets',    phone: '0745678901', email: 'info',    address: 'Nairobi' },
+    { name: 'Waeconmart Supermarkets',    phone: '0756789012', email: 'info',    address: 'Nairobi' },
   ];
   customers.forEach(c => DB.addCustomer(c));
 
   const custs = DB.getCustomers();
   const sampleOrders = [
-    { customerId: custs[0].id, items: [{ productId:'H500', qty:10, unitPrice:700 }, { productId:'PBS400', qty:5, unitPrice:360 }] },
-    { customerId: custs[1].id, items: [{ productId:'H1KG', qty:6, unitPrice:1300 }, { productId:'PBC250', qty:8, unitPrice:230 }] },
-    { customerId: custs[2].id, items: [{ productId:'PN200', qty:20, unitPrice:200 }, { productId:'H300', qty:4, unitPrice:450 }] },
-    { customerId: custs[3].id, items: [{ productId:'PBS150', qty:15, unitPrice:150 }, { productId:'PN100', qty:10, unitPrice:110 }] },
-    { customerId: custs[4].id, items: [{ productId:'H200', qty:8, unitPrice:320 }, { productId:'PBC800', qty:3, unitPrice:680 }] },
+    
   ];
 
   sampleOrders.forEach(o => {
