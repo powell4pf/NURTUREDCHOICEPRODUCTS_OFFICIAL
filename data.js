@@ -1,0 +1,223 @@
+// ============================================================
+// NURTUREDCHOICE PRODUCTS — DATA LAYER (Backend)
+// ============================================================
+
+const DB = {
+  // ---- Persistence ----
+  save(key, data) {
+    try { localStorage.setItem('nc_' + key, JSON.stringify(data)); } catch(e) {}
+  },
+  load(key, fallback = []) {
+    try {
+      const d = localStorage.getItem('nc_' + key);
+      return d ? JSON.parse(d) : fallback;
+    } catch(e) { return fallback; }
+  },
+
+  // ---- Products Catalog ----
+  PRODUCTS: [
+    // Honey
+    { id: 'H100',  category: 'honey',        name: 'Pure Honey 100g',           icon: '🍯', price: 180,  size: '100g',  variety: null },
+    { id: 'H200',  category: 'honey',        name: 'Pure Honey 200g',           icon: '🍯', price: 320,  size: '200g',  variety: null },
+    { id: 'H300',  category: 'honey',        name: 'Pure Honey 300g',           icon: '🍯', price: 450,  size: '300g',  variety: null },
+    { id: 'H500',  category: 'honey',        name: 'Pure Honey 500g',           icon: '🍯', price: 700,  size: '500g',  variety: null },
+    { id: 'H1KG',  category: 'honey',        name: 'Pure Honey 1kg',            icon: '🍯', price: 1300, size: '1kg',   variety: null },
+    // Peanut Butter — Smooth
+    { id: 'PBS150', category: 'peanut_butter', name: 'Peanut Butter Smooth 150g', icon: '🥜', price: 150,  size: '150g',  variety: 'smooth' },
+    { id: 'PBS250', category: 'peanut_butter', name: 'Peanut Butter Smooth 250g', icon: '🥜', price: 230,  size: '250g',  variety: 'smooth' },
+    { id: 'PBS400', category: 'peanut_butter', name: 'Peanut Butter Smooth 400g', icon: '🥜', price: 360,  size: '400g',  variety: 'smooth' },
+    { id: 'PBS800', category: 'peanut_butter', name: 'Peanut Butter Smooth 800g', icon: '🥜', price: 680,  size: '800g',  variety: 'smooth' },
+    // Peanut Butter — Crunchy
+    { id: 'PBC150', category: 'peanut_butter', name: 'Peanut Butter Crunchy 150g', icon: '🥜', price: 150,  size: '150g',  variety: 'crunchy' },
+    { id: 'PBC250', category: 'peanut_butter', name: 'Peanut Butter Crunchy 250g', icon: '🥜', price: 230,  size: '250g',  variety: 'crunchy' },
+    { id: 'PBC400', category: 'peanut_butter', name: 'Peanut Butter Crunchy 400g', icon: '🥜', price: 360,  size: '400g',  variety: 'crunchy' },
+    { id: 'PBC800', category: 'peanut_butter', name: 'Peanut Butter Crunchy 800g', icon: '🥜', price: 680,  size: '800g',  variety: 'crunchy' },
+    // Peanuts
+    { id: 'PN50',  category: 'peanuts',      name: 'Roasted Peanuts 50g',       icon: '🫘', price: 60,   size: '50g',   variety: null },
+    { id: 'PN100', category: 'peanuts',      name: 'Roasted Peanuts 100g',      icon: '🫘', price: 110,  size: '100g',  variety: null },
+    { id: 'PN200', category: 'peanuts',      name: 'Roasted Peanuts 200g',      icon: '🫘', price: 200,  size: '200g',  variety: null },
+  ],
+
+  getProduct(id) { return this.PRODUCTS.find(p => p.id === id); },
+
+  // ---- Stock ----
+  getStock() {
+    const s = this.load('stock', {});
+    const result = {};
+    this.PRODUCTS.forEach(p => {
+      result[p.id] = s[p.id] !== undefined ? s[p.id] : 50;
+    });
+    return result;
+  },
+  updateStock(id, qty) {
+    const s = this.getStock();
+    s[id] = Math.max(0, (s[id] || 0) + qty);
+    this.save('stock', s);
+  },
+  setStock(id, qty) {
+    const s = this.getStock();
+    s[id] = Math.max(0, qty);
+    this.save('stock', s);
+  },
+
+  // ---- Customers ----
+  getCustomers() { return this.load('customers', []); },
+  saveCustomers(list) { this.save('customers', list); },
+  getCustomer(id) { return this.getCustomers().find(c => c.id === id); },
+  addCustomer(data) {
+    const list = this.getCustomers();
+    const c = { id: 'C' + Date.now(), createdAt: new Date().toISOString(), ...data };
+    list.push(c);
+    this.saveCustomers(list);
+    return c;
+  },
+  updateCustomer(id, data) {
+    const list = this.getCustomers();
+    const i = list.findIndex(c => c.id === id);
+    if (i > -1) { list[i] = { ...list[i], ...data }; this.saveCustomers(list); }
+  },
+
+  // ---- Orders ----
+  getOrders() { return this.load('orders', []); },
+  saveOrders(list) { this.save('orders', list); },
+  getOrder(id) { return this.getOrders().find(o => o.id === id); },
+  addOrder(data) {
+    const list = this.getOrders();
+    const id = 'ORD-' + String(list.length + 1).padStart(4, '0');
+    const order = {
+      id,
+      date: new Date().toISOString(),
+      status: 'pending',
+      paymentStatus: 'unpaid',
+      amountPaid: 0,
+      ...data
+    };
+    // Deduct stock
+    order.items.forEach(item => this.updateStock(item.productId, -item.qty));
+    list.push(order);
+    this.saveOrders(list);
+    return order;
+  },
+  updateOrder(id, data) {
+    const list = this.getOrders();
+    const i = list.findIndex(o => o.id === id);
+    if (i > -1) { list[i] = { ...list[i], ...data }; this.saveOrders(list); return list[i]; }
+  },
+
+  // ---- Payments ----
+  getPayments() { return this.load('payments', []); },
+  savePayments(list) { this.save('payments', list); },
+  addPayment(data) {
+    const list = this.getPayments();
+    const payment = {
+      id: 'PAY-' + String(list.length + 1).padStart(4, '0'),
+      date: new Date().toISOString(),
+      ...data
+    };
+    list.push(payment);
+    this.savePayments(list);
+    // Update order payment status
+    const order = this.getOrder(data.orderId);
+    if (order) {
+      const totalPaid = (order.amountPaid || 0) + data.amount;
+      const status = totalPaid >= order.total ? 'paid'
+        : totalPaid > 0 ? 'partial' : 'unpaid';
+      this.updateOrder(data.orderId, { amountPaid: totalPaid, paymentStatus: status });
+    }
+    return payment;
+  },
+  getOrderPayments(orderId) {
+    return this.getPayments().filter(p => p.orderId === orderId);
+  },
+
+  // ---- Credit Notes ----
+  getCreditNotes() { return this.load('creditnotes', []); },
+  saveCreditNotes(list) { this.save('creditnotes', list); },
+  addCreditNote(data) {
+    const list = this.getCreditNotes();
+    const cn = {
+      id: 'CN-' + String(list.length + 1).padStart(4, '0'),
+      date: new Date().toISOString(),
+      ...data
+    };
+    list.push(cn);
+    this.saveCreditNotes(list);
+    return cn;
+  },
+
+  // ---- Helpers ----
+  fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' });
+  },
+  fmtMoney(n) {
+    return 'KES ' + Number(n || 0).toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  },
+  calcOrderTotal(items) {
+    return items.reduce((s, i) => s + (i.qty * i.unitPrice), 0);
+  },
+
+  // ---- Analytics ----
+  getSalesByMonth() {
+    const orders = this.getOrders();
+    const months = {};
+    orders.forEach(o => {
+      const m = new Date(o.date).toLocaleString('en', { month: 'short', year: '2-digit' });
+      months[m] = (months[m] || 0) + o.total;
+    });
+    return months;
+  },
+  getSalesByProduct() {
+    const orders = this.getOrders();
+    const byProd = {};
+    orders.forEach(o => {
+      o.items.forEach(item => {
+        byProd[item.productId] = (byProd[item.productId] || 0) + item.qty * item.unitPrice;
+      });
+    });
+    return byProd;
+  },
+  getOutstandingCustomers() {
+    const orders = this.getOrders();
+    const map = {};
+    orders.forEach(o => {
+      if (o.paymentStatus !== 'paid') {
+        const bal = o.total - (o.amountPaid || 0);
+        if (!map[o.customerId]) map[o.customerId] = { customerId: o.customerId, balance: 0, orders: [] };
+        map[o.customerId].balance += bal;
+        map[o.customerId].orders.push(o.id);
+      }
+    });
+    return Object.values(map);
+  },
+};
+
+// Seed some demo data if empty
+(function seedDemo() {
+  if (DB.getCustomers().length > 0) return;
+  const customers = [
+    { name: 'Mama Wanjiku Stores',  phone: '0712345678', email: 'wanjiku@store.co.ke',  address: 'Westlands, Nairobi' },
+    { name: 'Kamau Supermarket',    phone: '0723456789', email: 'info@kamau.co.ke',      address: 'Ngong Road, Nairobi' },
+    { name: 'Njeri Organic Foods',  phone: '0734567890', email: 'njeri@organic.co.ke',   address: 'Karen, Nairobi' },
+    { name: 'Omondi Fresh Mart',    phone: '0745678901', email: 'omondi@fresh.co.ke',    address: 'Kisumu CBD' },
+    { name: 'Aisha Health Shop',    phone: '0756789012', email: 'aisha@health.co.ke',    address: 'Mombasa Road' },
+  ];
+  customers.forEach(c => DB.addCustomer(c));
+
+  const custs = DB.getCustomers();
+  const sampleOrders = [
+    { customerId: custs[0].id, items: [{ productId:'H500', qty:10, unitPrice:700 }, { productId:'PBS400', qty:5, unitPrice:360 }] },
+    { customerId: custs[1].id, items: [{ productId:'H1KG', qty:6, unitPrice:1300 }, { productId:'PBC250', qty:8, unitPrice:230 }] },
+    { customerId: custs[2].id, items: [{ productId:'PN200', qty:20, unitPrice:200 }, { productId:'H300', qty:4, unitPrice:450 }] },
+    { customerId: custs[3].id, items: [{ productId:'PBS150', qty:15, unitPrice:150 }, { productId:'PN100', qty:10, unitPrice:110 }] },
+    { customerId: custs[4].id, items: [{ productId:'H200', qty:8, unitPrice:320 }, { productId:'PBC800', qty:3, unitPrice:680 }] },
+  ];
+
+  sampleOrders.forEach(o => {
+    const total = DB.calcOrderTotal(o.items);
+    const order = DB.addOrder({ ...o, total, notes: 'Sample order' });
+    // Pay some partially
+    const payAmt = Math.round(total * (Math.random() * 0.6 + 0.2));
+    DB.addPayment({ orderId: order.id, amount: payAmt, method: 'M-Pesa', reference: 'QDK' + Math.random().toString(36).slice(2,8).toUpperCase() });
+  });
+})();

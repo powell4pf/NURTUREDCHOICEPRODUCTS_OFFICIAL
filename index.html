@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NurturedChoice Products — Business Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🍯</div>
+      <div class="brand-text">
+        <span class="brand-name">NurturedChoice</span>
+        <span class="brand-sub">Products</span>
+      </div>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item active" data-page="dashboard"><span class="nav-icon">◈</span> Dashboard</li>
+      <li class="nav-item" data-page="products"><span class="nav-icon">◈</span> Products & Stock</li>
+      <li class="nav-item" data-page="customers"><span class="nav-icon">◈</span> Customers</li>
+      <li class="nav-item" data-page="orders"><span class="nav-icon">◈</span> Orders & Sales</li>
+      <li class="nav-item" data-page="payments"><span class="nav-icon">◈</span> Payments</li>
+      <li class="nav-item" data-page="invoices"><span class="nav-icon">◈</span> Invoices</li>
+      <li class="nav-item" data-page="credit-notes"><span class="nav-icon">◈</span> Credit Notes</li>
+      <li class="nav-item" data-page="reports"><span class="nav-icon">◈</span> Reports</li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-date" id="sidebarDate"></div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="top-actions">
+        <button class="btn-primary" id="quickSaleBtn">+ Quick Sale</button>
+      </div>
+    </header>
+
+    <div class="page-content" id="pageContent">
+      <!-- Dynamic content here -->
+    </div>
+  </main>
+</div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="modal">
+  <div class="modal-header">
+    <h3 id="modalTitle">Modal</h3>
+    <button class="modal-close" id="modalClose">✕</button>
+  </div>
+  <div class="modal-body" id="modalBody"></div>
+</div>
+
+<!-- Print Frame -->
+<iframe id="printFrame" style="display:none"></iframe>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
