@@ -104,6 +104,25 @@ const DB = {
     const list = this.getOrders();
     const i = list.findIndex(o => o.id === id);
     if (i > -1) { list[i] = { ...list[i], ...data }; this.saveOrders(list); return list[i]; }
+  renameOrder(oldId, newId) {
+  if (!newId || newId === oldId) return { ok: false, msg: 'No change.' };
+  const orders = this.getOrders();
+  if (orders.find(o => o.id === newId)) return { ok: false, msg: 'That order ID is already in use.' };
+  const idx = orders.findIndex(o => o.id === oldId);
+  if (idx === -1) return { ok: false, msg: 'Order not found.' };
+
+  orders[idx].id = newId;
+  this.saveOrders(orders);
+
+  const payments = this.getPayments();
+  payments.forEach(p => { if (p.orderId === oldId) p.orderId = newId; });
+  this.savePayments(payments);
+
+  const cns = this.getCreditNotes();
+  cns.forEach(cn => { if (cn.orderId === oldId) cn.orderId = newId; });
+  this.saveCreditNotes(cns);
+
+  return { ok: true };
   },
 
   // ---- Payments ----
