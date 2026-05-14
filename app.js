@@ -1165,6 +1165,30 @@ const Pages = {
     const balance = o.total - (o.amountPaid||0);
     const html = Pages.buildDocHTML('INVOICE', `INV-${orderId.replace('ORD-','')}`, o, c, balance);
     Pages.printDoc(html);
+  renameInvoiceModal(orderId) {
+  const invNum = 'INV-' + orderId.replace('ORD-', '');
+  App.openModal(`Rename Invoice — ${invNum}`, `
+    <div class="alert alert-warning">
+      ⚠️ Changing an invoice number also updates the linked order ID, payments, and any credit notes.
+    </div>
+    <div class="form-group">
+      <label class="form-label">Current Invoice / Order ID</label>
+      <input type="text" class="form-control" value="${orderId}" readonly style="background:#f5f0e8;font-family:'DM Mono',monospace">
+    </div>
+    <div class="form-group">
+      <label class="form-label">New Order ID *</label>
+      <input type="text" class="form-control" id="newOrderId"
+        placeholder="e.g. ORD-0042"
+        value="${orderId}"
+        style="font-family:'DM Mono',monospace">
+      <small class="text-muted">The invoice number shown on prints will be derived from this (e.g. ORD-0042 → INV-0042).</small>
+    </div>
+    <div class="modal-footer" style="padding:0;border:none;background:none;margin-top:16px">
+      <button class="btn-secondary" onclick="App.closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="Pages.saveRenameInvoice('${orderId}')">Save New Number</button>
+    </div>
+  `);
+},
   },
 
   // ---- SHARED LETTERHEAD HTML ----
