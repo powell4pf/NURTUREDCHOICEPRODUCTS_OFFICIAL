@@ -198,11 +198,7 @@ const DB = {
 (function seedDemo() {
   if (DB.getCustomers().length > 0) return;
   const customers = [
-    { name: 'Eastmatt Supermarkets',  phone: '0712345678', email: 'info',  address: 'Likoni Road, Nairobi' },
-    { name: 'Cleanshelf Supermarkets',    phone: '0723456789', email: 'info',      address: 'Nairobi' },
-    { name: 'Ottomart Supermarkets',  phone: '0734567890', email: 'info',   address: 'Nairobi' },
-    { name: 'MuhindiMweusi Supermarkets',    phone: '0745678901', email: 'info',    address: 'Nairobi' },
-    { name: 'Waeconmart Supermarkets',    phone: '0756789012', email: 'info',    address: 'Nairobi' },
+   
   ];
   customers.forEach(c => DB.addCustomer(c));
 
