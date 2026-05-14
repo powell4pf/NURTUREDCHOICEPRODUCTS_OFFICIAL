@@ -1147,6 +1147,7 @@ const Pages = {
                   <td><strong>${DB.fmtMoney(o.total)}</strong></td>
                   <td>${Pages.payBadge(o.paymentStatus)}</td>
                   <td>
+                    <button class="btn-ghost btn-xs" onclick="Pages.renameInvoiceModal('${o.id}')">✏️ Edit #</button>
                     <button class="btn-primary btn-xs" onclick="Pages.printInvoice('${o.id}')">🖨️ Print</button>
                     <button class="btn-secondary btn-xs" onclick="Pages.viewOrderModal('${o.id}')">View</button>
                   </td>
