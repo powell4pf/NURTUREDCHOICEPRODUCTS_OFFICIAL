@@ -1189,6 +1189,15 @@ const Pages = {
     </div>
   `);
 },
+    saveRenameInvoice(oldId) {
+  const newId = document.getElementById('newOrderId').value.trim();
+  if (!newId) { App.toast('Please enter a new order ID', 'error'); return; }
+  const result = DB.renameOrder(oldId, newId);
+  if (!result.ok) { App.toast(result.msg, 'error'); return; }
+  App.closeModal();
+  App.toast(`Invoice renamed to INV-${newId.replace('ORD-', '')}!`);
+  Pages.invoices();
+},
   },
 
   // ---- SHARED LETTERHEAD HTML ----
